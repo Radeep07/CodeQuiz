@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <!--Adapting to multiple screens-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Code Quiz</title>
+
+    <!-- Boostrap Stylesheet -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  
+    <!-- Our own CSS stylesheet -->
+    <link rel="stylesheet" href="./style.css" media="screen">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <!-- Displaying a note to the user about the available high scores and the total time/ time remaining on the top left and right of the screen-->               
+        <button id="highScores"></button>             
+        <h4 id="time"></h4>        
+      </div>
+      <!-- /.container -->
+  </nav>
+  <!-- End of navbar -->
+  <!--Main body of the quiz section-->
+  <main class="container">
+    <section class="row">
+        <div class="col-md-8">          
+          <article class="block">               
+            <!-- Displaying the instructions to the user to start the quiz including some guidelines -->          
+            <h3>Code Quiz Challenge</h3>
+            <p>You need to answer 5 multiple choice questions. Your score depends on the time of your response to each question. The time given for each question is approximately 15 seconds. You can score better if you take less than 15 seconds to answer correctly. There is a penalty of 15 seconds time for each wrong answer. You can take your time to view the high scores. You may start the quiz by clicking the button below!</p>
+            <button class="startQuiz">Start Quiz</button>           
+          </article>
+        </div>
+    </section>
+  </main>
+  <!-- jQuery CDN -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Bootstrap CDN -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!--Java script file inclusion-->
+  <script src="script.js"></script>
+</body>
+</html>

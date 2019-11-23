@@ -1,0 +1,17 @@
+#highScores{    
+    font-weight: bold;
+    font-size: 22px;
+    float: left;   
+}
+
+#time{
+font-weight: bold;
+font-size: 22px;
+float: right;
+}
+h1{
+    clear: both;
+    font-size: larger;
+}
+
+
