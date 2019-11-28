@@ -1,3 +1,4 @@
+//5 questions with choices and answers
 var questions = [
     {
       title: "Commonly used data types DO NOT include:",
@@ -27,7 +28,7 @@ var questions = [
   ];
   
 
-
+//Global variables for managing the time, keeping track of the events, storing the scores and displaying the questions to the user
 var timeEl = document.querySelector("#time");
 var highScore = document.querySelector("#highScores");
 var startQ = document.querySelector(".startQuiz");
@@ -36,22 +37,31 @@ var secondsLeft = 75;//setting the total time to 75 seconds
 var index = 0;
 var interval;
 var scored = 0;
+var UserNames = [];
+var UserScores = [];
+var storeButton = document.createElement("button");
+var clearButton = document.createElement("button");
+var displayButton = document.createElement("button");
 
-var pTag =document.createElement("h2");
+//var storednames;
+//var storedscores;
+
+
+//var pTag =document.createElement("h2");
 timeEl.textContent = "Time: " + secondsLeft+" Sec";
 highScore.textContent = "View High Scores";
 function renderLastRegistered() {
-  var nameUser = localStorage.getItem("name");
-  var ScoreUser = localStorage.getItem("Scores");
-  //question.innerHTML="";
-  //question.appendChild(JSON.parse(nameUser));
-  //question.appendChild(document.createElement("br"));
-  //question.appendChild(JSON.parse(scoreseUser));
+  var nameUser = JSON.parse(localStorage.getItem("name"));
+  var scoreOfUser = JSON.parse(localStorage.getItem("Scores"));
+  //appending the local storage items on the page
+  question.appendChild(nameUser);
+  question.appendChild(document.createElement("br"));
+  question.appendChild(scoreOfUser);
 
-  alert("Name is "+nameUser+"  High Score is "+ ScoreUser);
+  //alert("Name is "+nameUser+"  High Score is "+ ScoreUser);
 }
 highScore.addEventListener("click", function(){
-  renderLastRegistered();
+  renderTodos();
     
 });
 var timeQE,timeQS, timeQ;
@@ -75,16 +85,16 @@ function quiz(index){
         ans= document.createElement("button");
         ans.innerText = questions[index].choices[i];
         question.appendChild(ans);        
-        question.appendChild(document.createElement("br"));
-        //document.body.setAttribute(align, "center");      
+        question.appendChild(document.createElement("br"));        
         ans.addEventListener("click", function(){
           timeQE = secondsLeft;
           timeQ = timeQS-timeQE;
           var correctAns = questions[index].answer;
           var answ = ans.innerText;
+          var pTag =document.createElement("h3");
           if(event.target.innerText=== correctAns){
             answered = true;
-            pTag.innerText = "Correct";   
+            pTag.textContent = "Correct";   
             question.appendChild(document.createElement("br"));
             question.appendChild(pTag);           
             //alert(answered);
@@ -94,9 +104,9 @@ function quiz(index){
             }
             else if (answered === true){
               scored = scored+5;
-              pTag.innerText = "Correct";
+              pTag.textContent = "Correct";
               question.appendChild(document.createElement("br"));
-           question.appendChild(pTag);
+              question.appendChild(pTag);
             }
             
             
@@ -104,7 +114,7 @@ function quiz(index){
           else {
             secondsLeft = secondsLeft-15;
             //alert(secondsLeft);
-            pTag.innerText = "Wrong";
+            pTag.textContent = "Wrong";
             question.appendChild(document.createElement("br"));
             question.appendChild(pTag);
           }
@@ -124,6 +134,30 @@ function quiz(index){
   }
 }
 
+
+function storeTodos() {
+  // Stringify and set "todos" key in localStorage to todos array
+  localStorage.setItem("name", JSON.stringify(UserNames));
+  localStorage.setItem("scores", JSON.stringify(UserScores));  
+}
+
+function renderTodos(){
+  
+   
+for(i=0;i<UserNames.length;i++){
+  var storednames = document.createElement("h3");
+  var storedscores = document.createElement("h3");
+  
+  storednames.textContent = JSON.parse(localStorage.getItem("name"));
+  storedscores.textContent= JSON.parse(localStorage.getItem("scores"));
+  
+  question.innerText = "";
+ question.appendChild(storednames);
+ question.appendChild(storedscores);
+
+}
+}
+
 function displayScore(scored){
   
   var initials = document.createElement("h4");
@@ -138,11 +172,43 @@ function displayScore(scored){
   question.appendChild(buttonSubmit);
   buttonSubmit.addEventListener("click",function(event){
   event.preventDefault();
-  var nameU = document.querySelector("textarea").value;
-  localStorage.setItem("name", nameU);  
-  localStorage.setItem("Scores", scored);
-  renderLastRegistered();
-  
+  var nameU = document.querySelector("textarea").value.trim();
+  if(nameU!==""){
+    UserNames.push(nameU);
+    UserScores.push(scored);
+    storeButton.innerHTML = "Store Score";
+    clearButton.innerHTML = "Clear Score";
+    displayButton.innerHTML = "Display Score";
+    question.innerText = "";
+    question.appendChild(displayButton);
+    displayButton.addEventListener("click",function(){
+      var n = document.createElement("h3");
+      var s = document.createElement("h3");
+      n.textContent = nameU;
+      s.textContent = scored;
+      question.innerText = "";
+      question.appendChild(n);
+      question.appendChild(s);
+      var userConfirmation =document.createElement("h2");
+      userConfirmation.textContent = "Do you want to store the name and score to the local storage?"
+      question.appendChild(storeButton);
+      question.appendChild(clearButton);
+      storeButton.addEventListener("click",function(){
+        event.preventDefault();
+        storeTodos();
+
+      });
+      clearButton.addEventListener("click",function(){
+        event.preventDefault();
+        localStorage.clear();//clear local storage
+      });
+    
+
+
+    });
+       
+  }
+ 
   });
   
 
