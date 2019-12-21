@@ -13,26 +13,30 @@ var questions = [
     {
         title: "Arrays in Java Script can be used to store __________.",
         choices: ["numbers and strings", "other arrays", "alerts", "numbers"],
-        answer: "alerts"
+        answer: "numbers and strings"
       },
       {
-        title: "The condition in an if / else statement is enclosed within ____.",
-        choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-        answer: "parentheses"
+        title: "Choose the client-side JavaScript object?",
+        choices: ["Database", "Cursor", "Client", "FileUpLoad"],
+        answer: "FileUpLoad"
       },
       {
-        title: "Commonly used data types DO NOT include:",
-        choices: ["strings", "booleans", "alerts", "numbers"],
-        answer: "alerts"
+        title: "The HTML5 specification includes",
+        choices: ["Data storage", "Graphics APIs", "Other APIs for web apps", "All of the mentioned"],
+        answer: "All of the mentioned"
       }
   ];
-  
-
+ 
 //Global variables for managing the time, keeping track of the events, storing the scores and displaying the questions to the user
 var timeEl = document.querySelector("#time");
+timeEl.style.backgroundColor = "red";
 var highScore = document.querySelector("#highScores");
+highScore.style.backgroundColor = "green";
 var startQ = document.querySelector(".startQuiz");
+startQ.style.backgroundColor = "brown";
+startQ.style.color = "white";
 var question = document.querySelector(".block");
+question.style.backgroundColor = "beige";
 var secondsLeft = 75;//setting the total time to 75 seconds
 var index = 0;
 var interval;
@@ -42,32 +46,37 @@ var UserScores = [];
 var storeButton = document.createElement("button");
 var clearButton = document.createElement("button");
 var displayButton = document.createElement("button");
-
-//var storednames;
-//var storedscores;
-
-
-//var pTag =document.createElement("h2");
+//appending the local storage item on the page
+var n=document.createElement("h3");
 timeEl.textContent = "Time: " + secondsLeft+" Sec";
 highScore.textContent = "View High Scores";
-function renderLastRegistered() {
-  var nameUser = JSON.parse(localStorage.getItem("name"));
-  var scoreOfUser = JSON.parse(localStorage.getItem("Scores"));
-  //appending the local storage items on the page
-  question.appendChild(nameUser);
-  question.appendChild(document.createElement("br"));
-  question.appendChild(scoreOfUser);
+var nameUser = [];
+var scoreOfUser = [];
 
-  //alert("Name is "+nameUser+"  High Score is "+ ScoreUser);
+
+
+
+//to render locally stored element to the page 
+function renderLastRegistered() {
+  question.innerHTML="";
+  for(var i=0;i<localStorage.length;i++){
+    n.textContent="Name: "+ JSON.parse(localStorage.getItem("name")) + "      Score: "+ JSON.parse(localStorage.getItem("scores"));
+    question.appendChild(n);
+    question.appendChild(document.createElement("br"));
+  }
+   
 }
+
+//when highScore button is clicked to display the store high scores
 highScore.addEventListener("click", function(){
-  renderTodos();
-    
+  renderLastRegistered();   
 });
+
+
 var timeQE,timeQS, timeQ;
 var ans;
 var answered = false;
-
+//quiz start function
 function quiz(index){
   answered = false;
    timeQS = secondsLeft;
@@ -77,12 +86,11 @@ function quiz(index){
       highScore.textContent = "View High Scores";
       var questionPart = document.createElement("h1");  
       questionPart.textContent = questions[index].title;
-      question.appendChild(questionPart);
-      
-      
-      
+      question.appendChild(questionPart);   
+      //loop for all questions
       for(var i =0; i<questions[index].choices.length; i++){
         ans= document.createElement("button");
+        ans.style.backgroundColor = "lightblue";
         ans.innerText = questions[index].choices[i];
         question.appendChild(ans);        
         question.appendChild(document.createElement("br"));        
@@ -97,7 +105,6 @@ function quiz(index){
             pTag.textContent = "Correct";   
             question.appendChild(document.createElement("br"));
             question.appendChild(pTag);           
-            //alert(answered);
             if(answered===true && timeQ < 10){
               scored = scored + 10;
               
@@ -113,7 +120,6 @@ function quiz(index){
           }
           else {
             secondsLeft = secondsLeft-15;
-            //alert(secondsLeft);
             pTag.textContent = "Wrong";
             question.appendChild(document.createElement("br"));
             question.appendChild(pTag);
@@ -126,47 +132,44 @@ function quiz(index){
       }
       
     }
-      
-              
+     
+       
    
-  if(index===questions.length || secondsLeft===0){
-    displayScore(scored);
+  if(index===questions.length || secondsLeft<=0){
+    clearInterval(interval);
+    displayScore(scored,secondsLeft);
   }
 }
 
-
-function storeTodos() {
-  // Stringify and set "todos" key in localStorage to todos array
-  localStorage.setItem("name", JSON.stringify(UserNames));
-  localStorage.setItem("scores", JSON.stringify(UserScores));  
-}
-
+var namesArray=[];
+var scoresArray=[];
 function renderTodos(){
-  
-   
-for(i=0;i<UserNames.length;i++){
-  var storednames = document.createElement("h3");
-  var storedscores = document.createElement("h3");
-  
-  storednames.textContent = JSON.parse(localStorage.getItem("name"));
-  storedscores.textContent= JSON.parse(localStorage.getItem("scores"));
-  
-  question.innerText = "";
- question.appendChild(storednames);
- question.appendChild(storedscores);
+  storednames= JSON.parse(localStorage.getItem("name"));
+  storedscores= JSON.parse(localStorage.getItem("scores")); 
+  question.innerText = "";  
+  for(i=0;i<storednames.length;i++){ 
+  var stn = document.createElement("h3");
+  var sts = document.createElement("h3"); 
+  stn.textContent=storednames[i];
+  sts.textContent=storedscores[i];
+  question.appendChild(stn);
+  question.appendChild(sts);
 
+  }
 }
-}
-
-function displayScore(scored){
-  
+var timeramining;
+function displayScore(scored, timeleftover){
+  timeramining=timeleftover;
+  timeEl.textContent = "Time: " + timeramining+" Sec";  
   var initials = document.createElement("h4");
   question.innerHTML="";
   initials.textContent = "Enter your initials";
   question.appendChild(initials);
   var initialsText = document.createElement("textarea");
   question.appendChild(initialsText);
-  var buttonSubmit = document.createElement("button")
+  var buttonSubmit = document.createElement("button");
+  buttonSubmit.style.backgroundColor="brown";
+  buttonSubmit.style.color="white";
   buttonSubmit.innerText = "Submit";
   question.appendChild(document.createElement("br"));
   question.appendChild(buttonSubmit);
@@ -177,15 +180,21 @@ function displayScore(scored){
     UserNames.push(nameU);
     UserScores.push(scored);
     storeButton.innerHTML = "Store Score";
+    storeButton.style.backgroundColor="green";
+    storeButton.style.color="white";
     clearButton.innerHTML = "Clear Score";
+    clearButton.style.backgroundColor="blue";
+    clearButton.style.color="white";
     displayButton.innerHTML = "Display Score";
+    displayButton.style.backgroundColor="brown";
+    displayButton.style.color="white";
     question.innerText = "";
     question.appendChild(displayButton);
     displayButton.addEventListener("click",function(){
       var n = document.createElement("h3");
       var s = document.createElement("h3");
-      n.textContent = nameU;
-      s.textContent = scored;
+      n.textContent = "Name: "+ nameU;
+      s.textContent = "Score: " + scored;
       question.innerText = "";
       question.appendChild(n);
       question.appendChild(s);
@@ -195,11 +204,16 @@ function displayScore(scored){
       question.appendChild(clearButton);
       storeButton.addEventListener("click",function(){
         event.preventDefault();
-        storeTodos();
+        nameUser.push(nameU);
+        scoreOfUser.push(scored);
+        //storeTodos(nameUser,scoreOfUser);
+        localStorage.setItem("name", JSON.stringify(nameUser));
+        localStorage.setItem("scores", JSON.stringify(scoreOfUser));  
 
       });
       clearButton.addEventListener("click",function(){
         event.preventDefault();
+        question.innerHTML="";
         localStorage.clear();//clear local storage
       });
     
@@ -220,7 +234,11 @@ function displayScore(scored){
 
 startQ.addEventListener("click", function(){
   interval = setInterval(function() {
-    secondsLeft--;       
+    secondsLeft--;  
+    if(secondsLeft>=0){
+      timeEl.textContent = "Time: " + secondsLeft+" Sec"; 
+    }   
+
   }, 1000);
   quiz(index);
 });

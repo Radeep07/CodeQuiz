@@ -21,7 +21,7 @@ Here are some instructions for interpretation:
 
 * Refer to the animated GIF below for a demonstration of the application functionality.
 
-![code quiz](./Assets/Web-APIs-demo.gif)
+![code quiz](./Assets/images/Web-APIs-demo.gif)
 
 
 ## Guidelines
