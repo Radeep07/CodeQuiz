@@ -38,3 +38,4 @@ Here are some instructions for interpretation:
 
 * After the game ends, the user can save their initials and score to a highscores view using local storage.
 
+The link to deployed application can be found at [Code Quiz](https://radeep07.github.io/CodeQuiz/)
